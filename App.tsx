@@ -4,6 +4,7 @@ import Sidebar from './components/Sidebar';
 import HomePage from './components/HomePage';
 import VideoPage from './components/VideoPage';
 import LoginPage from './components/LoginPage';
+import HelpModal from './components/HelpModal';
 import { 
   auth, 
   onAuthStateChanged, 
@@ -30,6 +31,7 @@ const App: React.FC = () => {
   const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -180,6 +182,7 @@ const App: React.FC = () => {
         setIsOpen={setSidebarOpen}
         onLogout={handleLogout}
         onDeleteItem={handleDeleteHistoryItem}
+        onOpenHelp={() => setIsHelpModalOpen(true)}
       />
       <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-64 md:ml-72' : 'ml-16'}`}>
         <div className="p-4 sm:p-6 lg:p-8 h-full">
@@ -193,6 +196,7 @@ const App: React.FC = () => {
           )}
         </div>
       </main>
+      <HelpModal isOpen={isHelpModalOpen} onClose={() => setIsHelpModalOpen(false)} />
     </div>
   );
 };

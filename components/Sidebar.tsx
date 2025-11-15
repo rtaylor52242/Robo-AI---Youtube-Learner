@@ -6,6 +6,7 @@ import { HomeIcon } from './icons/HomeIcon';
 import { MenuIcon, XIcon } from './icons/MenuIcons';
 import { LogoutIcon } from './icons/LogoutIcon';
 import { TrashIcon } from './icons/TrashIcon';
+import { HelpIcon } from './icons/HelpIcon';
 
 interface SidebarProps {
   history: HistoryItem[];
@@ -16,9 +17,10 @@ interface SidebarProps {
   setIsOpen: (isOpen: boolean) => void;
   onLogout: () => void;
   onDeleteItem: (id: string) => void;
+  onOpenHelp: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ history, currentVideoId, onSelectItem, onGoHome, isOpen, setIsOpen, onLogout, onDeleteItem }) => {
+const Sidebar: React.FC<SidebarProps> = ({ history, currentVideoId, onSelectItem, onGoHome, isOpen, setIsOpen, onLogout, onDeleteItem, onOpenHelp }) => {
   return (
     <aside className={`fixed top-0 left-0 h-full bg-gray-800 border-r border-gray-700 text-white flex flex-col transition-all duration-300 ease-in-out z-10 ${isOpen ? 'w-64 md:w-72' : 'w-16'}`}>
       <div className={`flex items-center p-4 border-b border-gray-700 ${isOpen ? 'justify-between' : 'justify-center'}`}>
@@ -85,6 +87,14 @@ const Sidebar: React.FC<SidebarProps> = ({ history, currentVideoId, onSelectItem
       </nav>
 
       <div className="p-4 border-t border-gray-700">
+          <button
+            onClick={onOpenHelp}
+            className="flex items-center w-full gap-3 p-2 mb-2 rounded-md transition-colors text-gray-300 hover:bg-gray-700"
+            title="Help"
+          >
+            <HelpIcon className="w-6 h-6 flex-shrink-0" />
+            {isOpen && <span className="font-medium whitespace-nowrap">Help</span>}
+          </button>
           <button
             onClick={onLogout}
             className="flex items-center w-full gap-3 p-2 rounded-md transition-colors text-gray-300 hover:bg-red-500 hover:text-white"
