@@ -1,0 +1,5 @@
+{
+  "name": "Robo AI - Youtube Learner",
+  "description": "An application that provides AI-powered insights and transcripts for YouTube videos. Users can paste a video link, view the embedded video, and see a generated summary and transcript. A history of viewed videos is maintained for easy access.",
+  "requestFramePermissions": []
+}
