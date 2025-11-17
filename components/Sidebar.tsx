@@ -16,11 +16,11 @@ interface SidebarProps {
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
   onLogout: () => void;
-  onDeleteItem: (id: string) => void;
+  onRequestDelete: (id: string) => void;
   onOpenHelp: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ history, currentVideoId, onSelectItem, onGoHome, isOpen, setIsOpen, onLogout, onDeleteItem, onOpenHelp }) => {
+const Sidebar: React.FC<SidebarProps> = ({ history, currentVideoId, onSelectItem, onGoHome, isOpen, setIsOpen, onLogout, onRequestDelete, onOpenHelp }) => {
   return (
     <aside className={`fixed top-0 left-0 h-full bg-gray-800 border-r border-gray-700 text-white flex flex-col transition-all duration-300 ease-in-out z-10 ${isOpen ? 'w-64 md:w-72' : 'w-16'}`}>
       <div className={`flex items-center p-4 border-b border-gray-700 ${isOpen ? 'justify-between' : 'justify-center'}`}>
@@ -73,7 +73,7 @@ const Sidebar: React.FC<SidebarProps> = ({ history, currentVideoId, onSelectItem
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDeleteItem(item.id);
+                    onRequestDelete(item.id);
                   }}
                   className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-md text-gray-400 hover:bg-red-500 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"
                   title="Delete item"

@@ -5,6 +5,7 @@ import HomePage from './components/HomePage';
 import VideoPage from './components/VideoPage';
 import LoginPage from './components/LoginPage';
 import HelpModal from './components/HelpModal';
+import ConfirmDeleteModal from './components/ConfirmDeleteModal';
 import { 
   auth, 
   onAuthStateChanged, 
@@ -32,6 +33,8 @@ const App: React.FC = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isHelpModalOpen, setIsHelpModalOpen] = useState(false);
+  const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+  const [videoToDelete, setVideoToDelete] = useState<VideoData | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -153,6 +156,27 @@ const App: React.FC = () => {
     }
   }, [user, currentVideoId, handleGoHome]);
 
+  const handleRequestDelete = (videoId: string) => {
+    const video = history.find(v => v.id === videoId);
+    if (video) {
+        setVideoToDelete(video);
+        setIsConfirmDeleteModalOpen(true);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+      if (videoToDelete) {
+          await handleDeleteHistoryItem(videoToDelete.id);
+          setVideoToDelete(null);
+          setIsConfirmDeleteModalOpen(false);
+      }
+  };
+
+  const handleCancelDelete = () => {
+      setVideoToDelete(null);
+      setIsConfirmDeleteModalOpen(false);
+  };
+
 
   if (authLoading) {
     return (
@@ -181,7 +205,7 @@ const App: React.FC = () => {
         isOpen={isSidebarOpen}
         setIsOpen={setSidebarOpen}
         onLogout={handleLogout}
-        onDeleteItem={handleDeleteHistoryItem}
+        onRequestDelete={handleRequestDelete}
         onOpenHelp={() => setIsHelpModalOpen(true)}
       />
       <main className={`flex-1 transition-all duration-300 ${isSidebarOpen ? 'ml-64 md:ml-72' : 'ml-16'}`}>
@@ -197,6 +221,12 @@ const App: React.FC = () => {
         </div>
       </main>
       <HelpModal isOpen={isHelpModalOpen} onClose={() => setIsHelpModalOpen(false)} />
+      <ConfirmDeleteModal 
+        isOpen={isConfirmDeleteModalOpen}
+        onClose={handleCancelDelete}
+        onConfirm={handleConfirmDelete}
+        videoTitle={videoToDelete?.title || ''}
+      />
     </div>
   );
 };
